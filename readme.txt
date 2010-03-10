@@ -4,7 +4,7 @@ Donate link: http://www.n7studios.co.uk/2010/03/07/wordpress-insert-link-class-p
 Tags: insert,link,class
 Requires at least: 2.9.2
 Tested up to: 2.9.2
-Stable tag: 1.0
+Stable tag: trunk
 
 Allows custom class names to be added to the Insert / Edit link functionality the Wordpress Page and Post Editor.
 
