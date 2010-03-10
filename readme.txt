@@ -18,7 +18,7 @@ option within the Insert / Edit Link functionality of Wordpress' TinyMCE editor.
 1. Download the Insert Link Class Plugin.
 2. In your Wordpress Administration, go to Plugins > Add New > Upload, and select the plugin ZIP file.
 3. Activate the plugin
-4. You’ll see a Link Classes option appear on the menu; use this to add, edit and delete custom classes.
+4. You'll see a Link Classes option appear on the menu; use this to add, edit and delete custom classes.
 
 == Frequently Asked Questions ==
 
