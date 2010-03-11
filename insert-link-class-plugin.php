@@ -122,7 +122,7 @@ class InsertLinkClassPlugin {
         // Default Wordpress classes
         $cssClasses = array('aligncenter' => 'aligncenter',
                             'alignleft' => 'alignleft',
-                            'alignright' => 'alighright',
+                            'alignright' => 'alignright',
                             'wp-caption' => 'wp-caption',
                             'wp-caption-dd' => 'wp-caption-dd',
                             'wpGallery' => 'wpGallery',
