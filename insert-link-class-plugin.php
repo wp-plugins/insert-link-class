@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Insert Link Class Plugin
 * Plugin URI: http://www.n7studios.co.uk/2010/03/07/wordpress-insert-link-class-plugin/
-* Version: 1
+* Version: 1.1
 * Author: <a href="http://www.n7studios.co.uk/">Tim Carr</a>
 * Description: Allows custom class names to be added to the Insert / edit link functionality in the Wordpress Page and Post Editor.
 */
@@ -21,17 +21,20 @@ class InsertLinkClassPlugin {
     * Constructor.  Initiates plugin hooks and filters.
     */
     function InsertLinkClassPlugin() {
-        if (is_admin()) { // Only if we're in the admin section
-            define(PLUGIN_NAME, 'insert-link-class-plugin'); // Plugin programmatic name        
-            define(TABLE_NAME, 'insert_link_classes'); // Table name, without Wordpress table prefix
-            define(DOCUMENT_ROOT, substr(str_replace("\\", "/", dirname(__FILE__)), 0, strpos(str_replace("\\", "/", dirname(__FILE__)), "/wp-content")));
-            define(PLUGIN_ROOT, substr(str_replace("\\", "/", dirname(__FILE__)), 0, strpos(str_replace("\\", "/", dirname(__FILE__)), "/".PLUGIN_NAME))."/".PLUGIN_NAME);
-            
-            register_activation_hook(__FILE__, array(&$this, 'Install')); // Activation routine
-            register_deactivation_hook(__FILE__, array(&$this, 'Uninstall')); // Deactivation routine
+        if (is_admin()) {
+            // Plugin programmatic name (folder) and MySQL table name
+            $this->plugin->name = 'insert-link-class-plugin';
+            $this->plugin->table = 'insert_link_classes';
+
+            // Install & Uninstall Routines
+            register_activation_hook(__FILE__, array(&$this, 'Install'));
+            register_deactivation_hook(__FILE__, array(&$this, 'Uninstall'));
             
             add_action('admin_menu', array(&$this, 'AddAdminPanels')); // Add admin panels to Wordpress Admin
-            add_filter('tiny_mce_before_init', array(&$this, 'AddCustomTinyMCEOptions')); // Custom options for TinyMCE editor
+            
+            // TinyMCE Admin
+            add_filter('mce_buttons_2', array(&$this, 'TinyMCEButtons'), 999);
+            add_filter('tiny_mce_before_init', array(&$this, 'TinyMCEInit'));
             
             wp_enqueue_script('jquery'); // jQuery
         }
@@ -43,7 +46,7 @@ class InsertLinkClassPlugin {
     function Install() {
         global $wpdb;
         
-        $wpdb->query("  CREATE TABLE IF NOT EXISTS ".$wpdb->prefix.TABLE_NAME." (
+        $wpdb->query("  CREATE TABLE IF NOT EXISTS ".$wpdb->prefix.$this->plugin->table." (
                             classID int(10) NOT NULL AUTO_INCREMENT,
                             name varchar(200) NOT NULL,
                             css varchar(200) NOT NULL,
@@ -60,15 +63,15 @@ class InsertLinkClassPlugin {
     function Uninstall() {
         global $wpdb;
         
-        $wpdb->query("  DROP TABLE IF EXISTS ".$wpdb->prefix.TABLE_NAME);
+        $wpdb->query("  DROP TABLE IF EXISTS ".$wpdb->prefix.$this->plugin->table);
     }
     
     /**
     * Creates menu and submenu entries in Wordpress Admin.
     */
     function AddAdminPanels() {
-        add_menu_page('Link Classes', 'Link Classes', 9, PLUGIN_NAME, array(&$this, 'AdminPanel'));
-        add_submenu_page(PLUGIN_NAME, 'Settings', 'Settings', 9, PLUGIN_NAME, array(&$this, 'AdminPanel'));        
+        add_menu_page('Link Classes', 'Link Classes', 9, $this->plugin->name, array(&$this, 'AdminPanel'));
+        add_submenu_page($this->plugin->name, 'Settings', 'Settings', 9, $this->plugin->name, array(&$this, 'AdminPanel'));        
     }
     
     /**
@@ -84,11 +87,11 @@ class InsertLinkClassPlugin {
                     $this->SaveRecord($_GET['pKey'], $_POST);
                     $this->data = $this->GetAllRecords();
                     $this->successMessage = 'Record Saved';
-                    include_once(PLUGIN_ROOT.'/list.php');    
+                    include_once(WP_PLUGIN_DIR.'/'.$this->plugin->name.'/list.php');    
                 } else {
                     // Display form
                     $this->data = $this->GetRecord($_GET['pKey']);
-                    include_once(PLUGIN_ROOT.'/form.php');
+                    include_once(WP_PLUGIN_DIR.'/'.$this->plugin->name.'/form.php');
                 }
                 break;
             case 'save':
@@ -100,23 +103,32 @@ class InsertLinkClassPlugin {
                 }
                 $this->data = $this->GetAllRecords();
                 $this->successMessage = 'Record(s) Deleted';
-                include_once(PLUGIN_ROOT.'/list.php');
+                include_once(WP_PLUGIN_DIR.'/'.$this->plugin->name.'/list.php');
                 break;
             default:
                 // Display list of current records
                 $this->data = $this->GetAllRecords();
-                include_once(PLUGIN_ROOT.'/list.php');
+                include_once(WP_PLUGIN_DIR.'/'.$this->plugin->name.'/list.php');
                 break;    
         }        
     }
     
     /**
-    * Custom options for TinyMCE editor
+    * Adds style selector option to TinyMCE
     * 
-    * @param array $initArray Default TinyMCE options
-    * @return array Amended TinyMCE options
+    * @param mixed $orig
+    * @return mixed
     */
-    function AddCustomTinyMCEOptions($initArray) {
+    function TinyMCEButtons($orig) {
+        return array_merge($orig, array('styleselect'));
+    }
+    
+    /**
+    * Adds CSS classes to the TinyMCE editor Style Selector
+    * 
+    * @param mixed $initArray
+    */
+    function TinyMCEInit($initArray) {
         global $wpdb;
         
         // Default Wordpress classes
@@ -151,11 +163,11 @@ class InsertLinkClassPlugin {
         
         if ($pKey == '') {
             // Add new record
-            $wpdb->query("  INSERT INTO ".$wpdb->prefix.TABLE_NAME." (name, css)
+            $wpdb->query("  INSERT INTO ".$wpdb->prefix.$this->plugin->table." (name, css)
                             VALUES ('".htmlentities($data['name'])."', '".htmlentities($data['css'])."')");
         } else {
             // Edit existing record
-            $wpdb->query("  UPDATE ".$wpdb->prefix.TABLE_NAME." SET
+            $wpdb->query("  UPDATE ".$wpdb->prefix.$this->plugin->table." SET
                             name = '".htmlentities($data['name'])."', 
                             css = '".htmlentities($data['css'])."'
                             WHERE classID = ".mysql_real_escape_string($pKey)."
@@ -174,7 +186,7 @@ class InsertLinkClassPlugin {
     function DeleteRecord($pKey) {
         global $wpdb;
         
-        $wpdb->query("  DELETE FROM ".$wpdb->prefix.TABLE_NAME."
+        $wpdb->query("  DELETE FROM ".$wpdb->prefix.$this->plugin->table."
                         WHERE classID = ".mysql_real_escape_string($pKey)."
                         LIMIT 1");
         
@@ -190,7 +202,7 @@ class InsertLinkClassPlugin {
         global $wpdb;
         
         $results = $wpdb->get_results(" SELECT *
-                                        FROM ".$wpdb->prefix.TABLE_NAME."
+                                        FROM ".$wpdb->prefix.$this->plugin->table."
                                         WHERE classID = ".mysql_real_escape_string($pKey)."
                                         LIMIT 1");
         return $results[0];
@@ -205,7 +217,7 @@ class InsertLinkClassPlugin {
         global $wpdb;
         
         return $wpdb->get_results(" SELECT *
-                                    FROM ".$wpdb->prefix.TABLE_NAME."
+                                    FROM ".$wpdb->prefix.$this->plugin->table."
                                     ORDER BY name ASC");
     }
 }
