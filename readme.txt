@@ -4,7 +4,7 @@ Donate link: http://www.n7studios.co.uk/2010/03/07/wordpress-insert-link-class-p
 Tags: insert,link,class
 Requires at least: 3.0
 Tested up to: 3.0.1
-Stable tag: 1.1
+Stable tag: 1.2
 
 Allows custom class names to be added to the Insert / Edit link functionality the Wordpress Page and Post Editor.
 
@@ -38,6 +38,9 @@ Yes - this is a stable plugin, however field validation still needs to be added.
 
 == Changelog ==
 
+= 1.2 =
+* Fixes for WPMU installations and include_once errors
+
 = 1.1 =
 * Removed PLUGIN_NAME, fixed variables to ensure no errors when installing / using plugin.
 * Wordpress Hook fixes to work with Wordpress 3.0+
@@ -46,6 +49,9 @@ Yes - this is a stable plugin, however field validation still needs to be added.
 * First release.
 
 == Upgrade Notice ==
+
+= 1.2 =
+Fixes WPMU installations and include_once() errors.
 
 = 1.1 =
 Fixes PLUGIN_NAME and include_once() errors, includes Wordpress 3.0+ compatibility.

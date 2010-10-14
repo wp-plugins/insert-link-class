@@ -7,11 +7,11 @@
     }
     ?>
     
-    <form method="post" action="admin.php?page=<?php echo $this->plugin->name; ?>&cmd=save">
+    <form method="post" action="admin.php?page=insert-link-class&cmd=save">
         <!-- Title and Buttons -->
         <h2>Link Classes</h2>
         <p>
-            <a href="admin.php?page=<?php echo $this->plugin->name; ?>&cmd=add" title="Add Class" class="button">Add Class</a>        
+            <a href="admin.php?page=insert-link-class&cmd=add" title="Add Class" class="button">Add Class</a>        
         </p>
         
         <!-- List -->
@@ -32,7 +32,7 @@
                     <tr class="alternate iedit">
                         <td><input type="checkbox" name="classID[<?php echo $result->classID; ?>]" value="1" /></td>
                         <td>
-                            <a href="admin.php?page=<?php echo $this->plugin->name; ?>&cmd=edit&pKey=<?php echo $result->classID; ?>" title="Edit <?php echo $result->name; ?>">
+                            <a href="admin.php?page=insert-link-class&cmd=edit&pKey=<?php echo $result->classID; ?>" title="Edit <?php echo $result->name; ?>">
                                 <?php echo $result->name; ?>
                             </a>
                         </td>
@@ -46,7 +46,7 @@
                 <tr class="alternate iedit">
                     <td colspan="3">
                         <center>
-                            No custom classes defined. <a href="admin.php?page=<?php echo $this->plugin->name; ?>&cmd=add" title="Add Class" class="button">Add Class</a>        
+                            No custom classes defined. <a href="admin.php?page=insert-link-class&cmd=add" title="Add Class" class="button">Add Class</a>        
                         </center>
                     </td>
                 </tr>

@@ -20,10 +20,10 @@ class InsertLinkClassPlugin {
     /**
     * Constructor.  Initiates plugin hooks and filters.
     */
-    function InsertLinkClassPlugin() {
+    function InsertLinkClassPlugin() {                     
         if (is_admin()) {
             // Plugin programmatic name (folder) and MySQL table name
-            $this->plugin->name = 'insert-link-class-plugin';
+            $this->plugin->name = 'insert-link-class';
             $this->plugin->table = 'insert_link_classes';
 
             // Install & Uninstall Routines
@@ -103,12 +103,12 @@ class InsertLinkClassPlugin {
                 }
                 $this->data = $this->GetAllRecords();
                 $this->successMessage = 'Record(s) Deleted';
-                include_once(WP_PLUGIN_DIR.'/'.$this->plugin->name.'/list.php');
+                include_once(ABSPATH.'wp-content/plugins/'.$this->plugin->name.'/list.php');
                 break;
             default:
                 // Display list of current records
                 $this->data = $this->GetAllRecords();
-                include_once(WP_PLUGIN_DIR.'/'.$this->plugin->name.'/list.php');
+                include_once(ABSPATH.'wp-content/plugins/'.$this->plugin->name.'/list.php');
                 break;    
         }        
     }
