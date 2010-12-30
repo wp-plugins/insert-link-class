@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Insert Link Class Plugin
 * Plugin URI: http://www.n7studios.co.uk/2010/03/07/wordpress-insert-link-class-plugin/
-* Version: 1.3
+* Version: 1.31
 * Author: <a href="http://www.n7studios.co.uk/">Tim Carr</a>
 * Description: Allows custom class names to be added to the Insert / edit link functionality in the Wordpress Page and Post Editor.
 */
@@ -13,7 +13,7 @@
 * @package Wordpress
 * @subpackage Insert Link Class Plugin
 * @author Tim Carr
-* @version 1
+* @version 1.31
 * @copyright n7 Studios
 */
 class InsertLinkClassPlugin {

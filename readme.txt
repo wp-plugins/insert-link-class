@@ -4,7 +4,7 @@ Donate link: http://www.n7studios.co.uk/2010/03/07/wordpress-insert-link-class-p
 Tags: insert,link,class
 Requires at least: 3.0
 Tested up to: 3.0.4
-Stable tag: 1.3
+Stable tag: 1.31
 
 Allows custom class names to be added to the Insert / Edit link functionality the Wordpress Page and Post Editor.
 
