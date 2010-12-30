@@ -3,8 +3,8 @@ Contributors: Tim Carr
 Donate link: http://www.n7studios.co.uk/2010/03/07/wordpress-insert-link-class-plugin/
 Tags: insert,link,class
 Requires at least: 3.0
-Tested up to: 3.0.1
-Stable tag: 1.2
+Tested up to: 3.0.4
+Stable tag: 1.3
 
 Allows custom class names to be added to the Insert / Edit link functionality the Wordpress Page and Post Editor.
 
@@ -37,6 +37,9 @@ Yes - this is a stable plugin, however field validation still needs to be added.
 2. Additional classes added via plugin, displayed within the Insert / Edit Link functionality of Wordpress' TinyMCE editor
 
 == Changelog ==
+
+= 1.3 =
+* Fixes for WPMU installations and include_once errors
 
 = 1.2 =
 * Fixes for WPMU installations and include_once errors
